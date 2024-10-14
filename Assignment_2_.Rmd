@@ -1,7 +1,7 @@
 ---
-title: "Assignment 2"
+title: "Project 1"
 subtitle: "Deconstruct, Reconstruct Web Report"
-author: "Joheb Shaikh (s3823492)"
+author: "Joheb Shaikh"
 output: html_document
 urlcolor: blue
 ---
