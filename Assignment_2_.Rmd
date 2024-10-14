@@ -1,0 +1,94 @@
+---
+title: "Assignment 2"
+subtitle: "Deconstruct, Reconstruct Web Report"
+author: "Joheb Shaikh (s3823492)"
+output: html_document
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+# Do not change these settings!
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+### {.tabset} 
+
+**This is a template file. The example included is not considered a good example to follow for Assignment 2. Remove this warning prior to submitting.** 
+
+Click the **Original**, **Code** and **Reconstruction** tabs to read about the issues and how they were fixed. 
+
+#### Original
+
+<br>
+<center>
+<img src="MO_Barchart.jpg" width="80%">
+</center>
+<center>*Source: ACMA Research and Analysis Section (2015).*</center>
+<br>
+
+**Objective**
+
+Explain the objective of the original data visualisation and the targetted audience.  
+
+The visualisation chosen had the following three main issues:
+
+* Briefly explain issue 1
+* Briefly explain issue 2
+* Briefly explain issue 3
+
+**Reference**
+
+* ACMA Research and Analysis Section. (2015). *Australians get mobile*. Retrieved August 13, 2019, from Australian Communications and Media Authority website: https://www.acma.gov.au/theACMA/engage-blogs/engage-blogs/Research-snapshots/Australians-get-mobile
+
+#### Code
+
+The following code was used to fix the issues identified in the original. 
+
+```{r}
+library(ggplot2)
+library(ggpubr)
+library(dplyr)
+
+Cost_of_NaturalDisaster_in_US<- data.frame(
+  Cost_of_events=c(850.5,236.6,206.1,119.9,53.6,43.1,27.6), Disaster_Type= factor(c('Tropical Cyclone','Drought','Severe Strom','Flooding','Wildfire','Winter Strom','Freeze'), 
+                                                    levels = c('Tropical Cyclone','Drought','Severe Strom','Flooding','Wildfire','Winter Strom','Freeze'),
+                                                    ordered = FALSE) )
+
+
+Cost_of_NaturalDisaster_in_US<-Cost_of_NaturalDisaster_in_US %>% mutate(Percentage = Cost_of_events/1537.4*100, Propotion = '')
+
+p1<-ggplot(data = Cost_of_NaturalDisaster_in_US,aes(x = Disaster_Type, y = Cost_of_events, fill = Disaster_Type))+
+  coord_cartesian(ylim = c(0,1000))+
+  labs(title = "The Cost of Natural Disasters in the United States",subtitle = "Billion-dollar Events from 1980 to 2017", fill = 'Disaster Type', x= '', y='Cost of Events( USD billions)' ) +
+  theme_classic()+
+  geom_bar(stat = "identity",colour = "black", width = .8)+
+  scale_fill_manual(values =rev(c('#eff3ff','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#084594')))+
+  geom_text(aes(label=paste0(Cost_of_events,'B'), x= Disaster_Type), hjust = 0.5, vjust= -0.5, color='black',,family="Times New Roman",size = 5, facefont='bold')
+
+p2<-ggplot(Cost_of_NaturalDisaster_in_US, aes(x = Propotion, y = Cost_of_events, fill = Disaster_Type)) +
+  geom_col(width = 0.2)+
+  coord_flip() +
+  labs( caption = "Source: https://wwwclimate.gov", x='Proportion of Group',y='Cost of Events Hold (USD Billions)' ) +
+
+  geom_text(aes(label = paste0(round(Percentage),'%') ), position = position_stack(vjust=0.8), vjust=-5, colour='black', size=3) +
+  geom_text(aes(label = paste0(Cost_of_events,'B')), position = position_stack(vjust=0.8), vjust=8, colour='black', size=2) +
+  scale_fill_brewer(palette = "Set2") +
+  scale_fill_manual(values =rev(c('#eff3ff','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#084594')))+
+  theme_minimal() 
+
+
+```
+
+**Data Reference**
+
+* ACMA Research and Analysis Section. (2015). *Australians get mobile*. Retrieved August 13, 2019, from Australian Communications and Media Authority website: https://www.acma.gov.au/theACMA/engage-blogs/engage-blogs/Research-snapshots/Australians-get-mobile
+
+#### Reconstruction
+
+The following plot fixes the main issues in the original.
+
+```{r fig.align="center",fig.width=10, echo = FALSE}
+p1
+p2
+```
+
